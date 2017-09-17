@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+<title>Mandelbrot Set</title>
+<script type="text/javascript">
+var can,ctx;
+
+var a,b;
+var scale=.3;
+var centerX=0;
+var centerY=0;
+function init(){
+can=document.getElementById("can0");
+ctx=can.getContext("2d");
+can.addEventListener('click', move);
+}
+function draw(){
+	ctx.clearRect(0,0,can.width,can.height);
+	//a=parseInt(document.getElementById("input1").value);
+	b=parseInt(document.getElementById("input2").value);
+	for(var j=0;j<can.height;j++){
+	for(var i=0;i<can.width;i++){
+		var color=filled((i/can.width-0.5)/scale-centerX,(j/can.height-0.5)/scale-centerY);
+		if(color===b){
+		ctx.fillStyle="#000";
+		}else{
+		ctx.fillStyle="hsl("+color+",80%,60%)";
+		}
+		ctx.fillRect(i,j,1,1);
+	}
+	}
+}
+
+function move(e){
+	centerX=centerX-((e.clientX-can.offsetLeft)/can.width-0.5)/scale;
+	centerY=centerY-((e.clientY-can.offsetTop)/can.height-0.5)/scale;
+	scale*=1.5;
+	draw();
+}
+
+function filled(x,y){
+var u=0;
+var v=0;
+var u1;
+var t;
+for(t=0;t<b && u*u+v*v<1000;t++){
+	u1=u*u-v*v+x;;
+	v=2*u*v+y;
+	u=u1;
+}
+return(t);
+}
+</script>
+</head>
+<body onload="init()">
+<button onclick="draw()">Draw</button>
+<!--<input id="input1" value="1000">-->Iterations:<input id="input2" value="360">
+<button onclick="scale*=2;draw()">+</button><button onclick="scale/=2;draw()">-</button><br>
+<canvas height="500" width="500" id="can0"></canvas>
+</body>
+</html>

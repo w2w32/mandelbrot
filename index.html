@@ -13,6 +13,7 @@ function init(){
 can=document.getElementById("can0");
 ctx=can.getContext("2d");
 can.addEventListener('click', move);
+draw();
 }
 function draw(){
 	ctx.clearRect(0,0,can.width,can.height);
